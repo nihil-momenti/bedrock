@@ -11,6 +11,10 @@ class Blip
     @contributors.each { |c| s << contributor.to_s }
     @body.each { |b| s << b.to_s }   
   end
+
+  def apply (op)
+    op.apply(self)
+  end
 end
 
 class Line

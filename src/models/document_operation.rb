@@ -37,6 +37,12 @@ module Rave
         return s
       end
       
+      def to_json(*a)
+        {
+          'json_class' => self.class.name,
+          'ops'        => @ops
+        }.to_json(*a)
+      end
       
       class << self
         def transform(client_operation, server_operation)
@@ -52,6 +58,14 @@ module Rave
             op2 = server_operation[j = j.next] unless op2
           end
           return client_transform, server_transform
+        end
+        
+        def json_create(o)
+          operation = DocumentOperation.new
+          o['ops'].each do |op|
+            operation << op
+          end
+          return operation
         end
       end
     end

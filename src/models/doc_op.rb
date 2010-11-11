@@ -27,7 +27,7 @@ module Rave
           @length = 1
         
         else
-          raise NotImplementedError
+          raise NotImplementedError, "No type #{type}"
         end
         self.freeze
       end
@@ -48,9 +48,38 @@ module Rave
         return DocOp.transform(self, other)
       end
       
+      def to_json(*a)
+        {
+          'json_class' => self.class.name,
+          'type'       => @type,
+          'data'       =>
+            case @type
+            when :retain
+              [['length', @length]]
+            when :insert_text, :delete_text
+              [['text', @text]]
+            when :insert_element_start
+              [['name', @name],
+               ['attributes', @attributes]]
+            when :insert_element_end, :delete_element_start, :delete_element_end
+              [[]]
+            when :replace_attributes, :update_attributes
+              [['attributes', @attributes]]
+            end
+        }.to_json(*a)
+      end
+      
       class << self
         def transform(client_op, server_op)
           return DocOpTransformer::transform(client_op, server_op)
+        end
+        
+        def json_create(o)
+          data = {}
+          o['data'].each do |d|
+            data[d[0].to_sym] = d[1]
+          end
+          new(o['type'].to_sym, data)
         end
       end
     end

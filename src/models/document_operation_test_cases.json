@@ -1,0 +1,36 @@
+[
+  [{
+      "json_class": "DocumentOperation",
+      "ops": [{
+          "json_class": "DocOp",
+          "type":       "retain",
+          "data":       [["length", 10]]
+        },{
+          "json_class": "DocOp",
+          "type":       "insert_text",
+          "data":       [["text", "Hello"]]
+        },{
+          "json_class": "DocOp",
+          "type":       "retain",
+          "data":       [["length", 10]]
+        }
+      ]
+    },{
+      "json_class": "DocumentOperation",
+      "ops": [{
+          "json_class": "DocOp",
+          "type":       "retain",
+          "data":       [["length", 10]]
+        },{
+          "json_class": "DocOp",
+          "type":       "insert_text",
+          "data":       [["text", " World!"]]
+        },{
+          "json_class": "DocOp",
+          "type":       "retain",
+          "data":       [["length", 10]]
+        }
+      ]
+    }
+  ]
+]

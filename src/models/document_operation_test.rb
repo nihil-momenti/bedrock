@@ -1,28 +1,21 @@
 require 'document_operation'
+require 'rubygems'
+require 'json'
 
 include Rave::Models
 
-client_operation = DocumentOperation.new
-server_operation = DocumentOperation.new
+ops = JSON.parse(open('document_operation_test_cases.json').read)
 
-client_operation  <<
-  DocOp.new(:retain, :length => 10) <<
-  DocOp.new(:insert_text, :text => "Hello") <<
-  DocOp.new(:retain, :length => 10)
-   
-server_operation <<
-  DocOp.new(:retain, :length => 10) <<
-  DocOp.new(:insert_text, :text => " World!") <<
-  DocOp.new(:retain, :length => 10)
-                 
-p "Client operation:"
-p client_operation
-p "Server operation:"
-p server_operation
+ops.each do |pair|
+  p "Client operation:"
+  p pair[0]
+  p "Server operation:"
+  p pair[1]
 
-trans_client_operation, trans_server_operation = DocumentOperation.transform(client_operation, server_operation)
+  trans_pair_0, trans_pair_1 = DocumentOperation.transform(pair[0], pair[1])
 
-p "Transformed client operation:"
-p trans_client_operation
-p "Transformed server operation:"
-p trans_server_operation
+  p "Transformed client operation:"
+  p trans_pair_0
+  p "Transformed server operation:"
+  p trans_pair_1
+end

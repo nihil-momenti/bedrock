@@ -2,7 +2,7 @@ require 'document_operation'
 require 'rubygems'
 require 'json'
 
-include Rave::Models
+include Bedrock
 
 ops = JSON.parse(open('document_operation_test_cases.json').read)
 

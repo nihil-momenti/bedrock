@@ -20,6 +20,10 @@ module Bedrock
       
     end
     
+    def length
+      @ops.reduce(0) {|accum, op| accum + op.length}
+    end
+    
     def transform(other)
       DocumentOperation.transform(self, other)
     end

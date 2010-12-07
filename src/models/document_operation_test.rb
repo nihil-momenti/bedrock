@@ -1,4 +1,4 @@
-require 'document_operation'
+require_relative 'document_operation.rb'
 require 'rubygems'
 require 'json'
 

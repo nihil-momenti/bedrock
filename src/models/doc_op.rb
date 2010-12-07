@@ -1,4 +1,4 @@
-require 'doc_op_transformer'
+require_relative 'doc_op_transformer'
 
 module Bedrock
   include DocOpTransformer

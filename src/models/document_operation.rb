@@ -1,4 +1,4 @@
-require 'doc_op'
+require_relative 'doc_op'
 
 module Bedrock
   class DocumentOperation

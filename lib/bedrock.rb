@@ -1,0 +1,3 @@
+module Bedrock
+  # Your code goes here...
+end

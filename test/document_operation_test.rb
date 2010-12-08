@@ -1,10 +1,10 @@
-require_relative 'document_operation.rb'
+require_relative '../src/bedrock/document_operation.rb'
 require 'rubygems'
 require 'json'
 
 include Bedrock
 
-ops = JSON.parse(open('document_operation_test_cases.json').read)
+ops = JSON.parse(open(File.dirname(__FILE__) + '/' + 'document_operation_test_cases.json').read)
 
 ops.each do |pair|
   p "Client operation:"

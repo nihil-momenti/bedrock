@@ -1,14 +1,16 @@
-class Conversation
-  def initialize(options)
-    @options = options
-    @root = Thread.new
+module Bedrock
+  class Conversation
+    def initialize(options)
+      @options = options
+      @root = Thread.new
+    end
   end
-end
-
-class Thread
-  def initialize(id=null, inline=false)
-    @id = id
-    @inline = inline
-    @blips = []
+  
+  class Thread
+    def initialize(id=null, inline=false)
+      @id = id
+      @inline = inline
+      @blips = []
+    end
   end
 end

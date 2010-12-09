@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Wim Looman"]
   s.email       = ["ghostunderscore@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/Nemo157/bedrock"
   s.summary     = %q{The bedrock of the Wave Protocol}
   s.description = %q{TODO: Write a gem description}
 
@@ -18,4 +18,6 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_development_dependency 'rspec'
 end

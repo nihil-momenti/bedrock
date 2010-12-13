@@ -1,3 +1,4 @@
+require 'rspec'
 require 'bedrock/blip'
 
 include Bedrock

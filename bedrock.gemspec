@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency 'rspec', '~>2.3.0'
+  s.add_development_dependency 'rcov', '~>0.9.9'
   s.add_development_dependency 'autotest', '~>4.4.6'
 end

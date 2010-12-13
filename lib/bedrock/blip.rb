@@ -9,7 +9,7 @@ module Bedrock
       @annotations = []
     end
   
-    def to_html
+    def to_xml
       s = ""
       @contributors.each { |c| s << contributor.to_s }
       s << "<body>\n"
@@ -31,11 +31,11 @@ module Bedrock
   end
   
   class Line
-    def initialize(options)
+    def initialize(options={})
       @options = options
     end
   
-    def to_s
+    def to_xml
       s = ""
       s << "<line"
       s << " t=\"#{@options[:t].to_s}\"" if @options[:t]

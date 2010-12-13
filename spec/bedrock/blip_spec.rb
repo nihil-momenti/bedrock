@@ -27,3 +27,37 @@ describe Blip do
     end
   end
 end
+
+describe Line do
+  describe '#initialize' do
+    context 'when given no options' do
+      it 'should create an empty element' do
+        @line = Line.new
+        @line.should be
+      end
+    end
+
+    context 'when given options' do
+      it 'should create a non-empty element' do
+        @line = Line.new(:t => 'h1')
+        @line.should be
+      end
+    end
+  end
+
+  describe '#to_s' do
+    context 'when given no options' do
+      it 'returns an empty element' do
+        @line = Line.new
+        @line.to_xml.should == '<line></line>'
+      end
+    end
+
+    context 'when given a line type' do
+      it 'returns an element with that line type' do
+        @line = Line.new(:t => 'h1')
+        @line.to_xml.should == '<line t="h1"></line>'
+      end
+    end
+  end
+end

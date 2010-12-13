@@ -1,5 +1,7 @@
 module Bedrock
   class Blip
+    attr_accessor :id, :contributors, :body, :annotations
+
     def initialize (id)
       @id = id
       @contributors = []
@@ -7,7 +9,7 @@ module Bedrock
       @annotations = []
     end
   
-    def to_s
+    def to_html
       s = ""
       @contributors.each { |c| s << contributor.to_s }
       s << "<body>\n"
@@ -71,4 +73,5 @@ module Bedrock
       end
       return s
     end
+  end
 end

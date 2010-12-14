@@ -7,6 +7,9 @@ namespace :cover_me do
   desc "Generate the cover_me report"
   task :report do
     require 'cover_me'
+    CoverMe.config do |c|
+      c.at_exit = Proc.new {}
+    end
     CoverMe.complete!
   end
 end

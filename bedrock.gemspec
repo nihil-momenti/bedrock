@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/Nemo157/bedrock"
   s.summary     = %q{The bedrock of the Wave Protocol}
   s.description = %q{TODO: Write a gem description}
+  s.licenses    = ["Apache License 2.0"]
 
   s.rubyforge_project = "bedrock"
 
@@ -19,7 +20,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.required_ruby_version = '~>1.9.2'
+
   s.add_development_dependency 'rspec', '~>2.3.0'
-  s.add_development_dependency 'rcov', '~>0.9.9'
+  s.add_development_dependency 'cover_me', '~>1.0.0.rc4'
   s.add_development_dependency 'autotest', '~>4.4.6'
 end

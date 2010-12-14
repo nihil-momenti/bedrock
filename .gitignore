@@ -4,3 +4,4 @@ pkg/*
 .bundle
 coverage/*
 coverage.data
+.rvmrc

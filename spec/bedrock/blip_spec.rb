@@ -4,26 +4,54 @@ require 'bedrock/blip'
 
 module Bedrock
   describe Blip do
-    describe '#initialize' do
-      context 'when given valid id' do
-        before :all do
-          @valid_id = 'valid_id'
-          @blip = Blip.new(@valid_id)
+    describe '#id' do
+      context 'when just constructed' do
+        it 'returns the specified id' do
+          @blip = Blip.new('an_id')
+          @blip.id.should == 'an_id'
         end
-  
-        it 'creates a new blip' do
-          @blip.should be
-        end
-  
-        it 'sets the id to the given id' do
-          @blip.id.should be @valid_id
-        end
-  
-        [:contributors, :body, :annotations].each do |array|
-          it "initializes the #{array} array" do
-            @blip.send(array).should be_empty
+      end
+    end
+
+    [:contributors, :body, :annotations].each do |attr|
+      describe "##{attr}" do
+        context 'when just constructed' do
+          it 'returns an empty array' do
+            @blip = Blip.new('an_id')
+            @blip.send(attr).should be_empty
           end
         end
+      end
+    end
+
+    describe '#[]=' do
+      context 'when it is used' do
+        it 'sets the value' do
+          @blip = Blip.new('an_id')
+          @blip[5] = 'something'
+          @blip[5].should == 'something'
+        end
+      end
+    end
+
+    describe 'to_xml' do
+      context 'when just constructed' do
+        it 'returns an empty blip' do
+          @blip = Blip.new('an_id')
+          @blip.to_xml.should == "<body>\n</body>"
+        end
+      end
+
+      context 'when contributors added' do
+        it 'returns the contributors'
+      end
+
+      context 'when body added' do
+        it 'returns the added body'
+      end
+
+      context 'when contributors and body added' do
+        it 'returns the added contributors and body'
       end
     end
   end

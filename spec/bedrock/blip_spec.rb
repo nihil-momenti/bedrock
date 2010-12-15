@@ -25,16 +25,16 @@ module Bedrock
     end
 
     describe '#[]=' do
-      context 'when it is used' do
+      context 'when it is given a single character' do
         it 'sets the value' do
           @blip = Blip.new('an_id')
-          @blip[5] = 'something'
-          @blip[5].should == 'something'
+          @blip[5] = 's'
+          @blip[5].should == 's'
         end
       end
     end
 
-    describe 'to_xml' do
+    describe '#to_xml' do
       context 'when just constructed' do
         it 'returns an empty blip' do
           @blip = Blip.new('an_id')
@@ -47,7 +47,14 @@ module Bedrock
       end
 
       context 'when body added' do
-        it 'returns the added body'
+        it 'returns the added body' do
+          @blip = Blip.new('an_id')
+          @blip[0] = Line.new :t => :h1
+          @blip[1,10] = 'first line'.chars.to_a
+          @blip[11] = Line.new
+          @blip[12,11] = 'second line'.chars.to_a
+          @blip.to_xml.should == "<body>\n<line t=\"h1\"></line>first line\n<line></line>second line\n</body>"
+        end
       end
 
       context 'when contributors and body added' do
@@ -61,14 +68,14 @@ module Bedrock
       context 'when given no options' do
         it 'returns an empty element' do
           @line = Line.new
-          @line.to_xml.should == '<line></line>'
+          @line.to_xml.should == "\n<line></line>"
         end
       end
   
       context 'when given a line type' do
         it 'returns an element with that line type' do
           @line = Line.new(:t => 'h1')
-          @line.to_xml.should == '<line t="h1"></line>'
+          @line.to_xml.should == "\n<line t=\"h1\"></line>"
         end
       end
     end
@@ -79,7 +86,7 @@ module Bedrock
       context 'when given no attributes' do
         it 'returns a basic start element' do
           @start_element = Element.new(:start, 'name')
-          @start_element.to_xml.should == '<name>'
+          @start_element.to_xml.should == "\n<name>"
         end
 
         it 'returns a basic end element' do
@@ -91,7 +98,7 @@ module Bedrock
       context 'when given attributes' do
         it 'returns a start element with attributes' do
           @start_element = Element.new(:start, 'name', :a1 => 'v1', :a2 => 'v2')
-          @start_element.to_xml.should == '<name a1="v1" a2="v2">'
+          @start_element.to_xml.should == "\n<name a1=\"v1\" a2=\"v2\">"
         end
 
         it 'returns a basic end element' do
@@ -108,21 +115,21 @@ module Bedrock
       context 'when given new value for existing attribute' do
         it 'changes the specified attribute value without touching others' do
           @start_element.update_attributes :a1 => 'v3'
-          @start_element.to_xml.should == '<name a1="v3" a2="v2">'
+          @start_element.to_xml.should == "\n<name a1=\"v3\" a2=\"v2\">"
         end
       end
 
       context 'when given nil for existing attribute' do
         it 'removes the specified attribute without touching others' do
           @start_element.update_attributes :a1 => nil
-          @start_element.to_xml.should == '<name a2="v2">'
+          @start_element.to_xml.should == "\n<name a2=\"v2\">"
         end
       end
 
       context 'when given new value for new attribute' do
         it 'adds the specified attribute without touching others' do
           @start_element.update_attributes :a3 => 'v3'
-          @start_element.to_xml.should == '<name a1="v1" a2="v2" a3="v3">'
+          @start_element.to_xml.should == "\n<name a1=\"v1\" a2=\"v2\" a3=\"v3\">"
         end
       end
     end
@@ -131,7 +138,7 @@ module Bedrock
       it 'changes all the attributes' do
         @start_element = Element.new(:start, 'name', :a1 => 'v1', :a2 => 'v2')
         @start_element.replace_attributes :a2 => 'v3'
-        @start_element.to_xml.should == '<name a2="v3">'
+        @start_element.to_xml.should == "\n<name a2=\"v3\">"
       end
     end
   end

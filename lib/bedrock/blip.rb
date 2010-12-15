@@ -12,9 +12,9 @@ module Bedrock
     def to_xml
       s = ""
       @contributors.each { |c| s << contributor.to_s }
-      s << "<body>\n"
-      @body.each { |b| s << b.to_s }
-      s << "</body>"
+      s << "<body>"
+      @body.each { |b| s << (b.respond_to?(:to_xml) ? b.to_xml : b.to_s) }
+      s << "\n</body>"
     end
   
     def apply (op)
@@ -37,7 +37,7 @@ module Bedrock
   
     def to_xml
       s = ""
-      s << "<line"
+      s << "\n<line"
       s << " t=\"#{@options[:t].to_s}\"" if @options[:t]
       s << " i=\"#{@options[:i].to_s}\"" if @options[:i]
       s << " a=\"#{@options[:a].to_s}\"" if @options[:a]
@@ -65,7 +65,7 @@ module Bedrock
     def to_xml
       case(@type)
       when :start
-        s = "<#{@name}"
+        s = "\n<#{@name}"
         @attributes.each { |key, value| s << " #{key}=\"#{value}\"" unless value == nil }
         s << ">"
       when :end

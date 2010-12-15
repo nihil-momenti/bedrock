@@ -48,7 +48,7 @@ module Bedrock
   end
 
   class Element
-    def initialize(type, name=nil, attributes=nil)
+    def initialize(type, name, attributes={})
       @type = type
       @name = name
       @attributes = attributes
@@ -62,11 +62,11 @@ module Bedrock
       @attributes = new_attributes
     end
 
-    def to_s
+    def to_xml
       case(@type)
       when :start
         s = "<#{@name}"
-        @attributes.each { |key, value| s << " #{key}=\"#{value}\"" }
+        @attributes.each { |key, value| s << " #{key}=\"#{value}\"" unless value == nil }
         s << ">"
       when :end
         s = "</#{@name}>"

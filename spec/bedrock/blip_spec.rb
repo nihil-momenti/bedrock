@@ -29,23 +29,7 @@ module Bedrock
   end
   
   describe Line do
-    describe '#initialize' do
-      context 'when given no options' do
-        it 'should create an empty element' do
-          @line = Line.new
-          @line.should be
-        end
-      end
-  
-      context 'when given options' do
-        it 'should create a non-empty element' do
-          @line = Line.new(:t => 'h1')
-          @line.should be
-        end
-      end
-    end
-  
-    describe '#to_s' do
+    describe '#to_xml' do
       context 'when given no options' do
         it 'returns an empty element' do
           @line = Line.new
@@ -58,6 +42,68 @@ module Bedrock
           @line = Line.new(:t => 'h1')
           @line.to_xml.should == '<line t="h1"></line>'
         end
+      end
+    end
+  end
+
+  describe Element do
+    describe '#to_xml' do
+      context 'when given no attributes' do
+        it 'returns a basic start element' do
+          @start_element = Element.new(:start, 'name')
+          @start_element.to_xml.should == '<name>'
+        end
+
+        it 'returns a basic end element' do
+          @end_element = Element.new(:end, 'name')
+          @end_element.to_xml.should == '</name>'
+        end
+      end
+
+      context 'when given attributes' do
+        it 'returns a start element with attributes' do
+          @start_element = Element.new(:start, 'name', :a1 => 'v1', :a2 => 'v2')
+          @start_element.to_xml.should == '<name a1="v1" a2="v2">'
+        end
+
+        it 'returns a basic end element' do
+          @end_element = Element.new(:end, 'name', :a1 => 'v1', :a2 => 'v2')
+          @end_element.to_xml.should == '</name>'
+        end
+      end
+    end
+
+    describe '#update_attributes' do
+      before :each do
+        @start_element = Element.new(:start, 'name', :a1 => 'v1', :a2 => 'v2')
+      end
+      context 'when given new value for existing attribute' do
+        it 'changes the specified attribute value without touching others' do
+          @start_element.update_attributes :a1 => 'v3'
+          @start_element.to_xml.should == '<name a1="v3" a2="v2">'
+        end
+      end
+
+      context 'when given nil for existing attribute' do
+        it 'removes the specified attribute without touching others' do
+          @start_element.update_attributes :a1 => nil
+          @start_element.to_xml.should == '<name a2="v2">'
+        end
+      end
+
+      context 'when given new value for new attribute' do
+        it 'adds the specified attribute without touching others' do
+          @start_element.update_attributes :a3 => 'v3'
+          @start_element.to_xml.should == '<name a1="v1" a2="v2" a3="v3">'
+        end
+      end
+    end
+
+    describe '#replace_attributes' do
+      it 'changes all the attributes' do
+        @start_element = Element.new(:start, 'name', :a1 => 'v1', :a2 => 'v2')
+        @start_element.replace_attributes :a2 => 'v3'
+        @start_element.to_xml.should == '<name a2="v3">'
       end
     end
   end

@@ -4,10 +4,13 @@ require 'bedrock/blip'
 
 module Bedrock
   describe Blip do
+    before :each do
+      @blip = Blip.new('an_id')
+    end
+
     describe '#id' do
       context 'when just constructed' do
         it 'returns the specified id' do
-          @blip = Blip.new('an_id')
           @blip.id.should == 'an_id'
         end
       end
@@ -17,7 +20,6 @@ module Bedrock
       describe "##{attr}" do
         context 'when just constructed' do
           it 'returns an empty array' do
-            @blip = Blip.new('an_id')
             @blip.send(attr).should be_empty
           end
         end
@@ -26,9 +28,11 @@ module Bedrock
 
     describe '#[]=' do
       context 'when it is given a single character' do
-        it 'sets the value' do
-          @blip = Blip.new('an_id')
+        before :each do
           @blip[5] = 's'
+        end
+
+        it 'sets the value' do
           @blip[5].should == 's'
         end
       end
@@ -37,7 +41,6 @@ module Bedrock
     describe '#to_xml' do
       context 'when just constructed' do
         it 'returns an empty blip' do
-          @blip = Blip.new('an_id')
           @blip.to_xml.should == "<body>\n</body>"
         end
       end
@@ -47,18 +50,33 @@ module Bedrock
       end
 
       context 'when body added' do
-        it 'returns the added body' do
-          @blip = Blip.new('an_id')
+        before :each do
           @blip[0] = Line.new :t => :h1
           @blip[1,10] = 'first line'.chars.to_a
           @blip[11] = Line.new
           @blip[12,11] = 'second line'.chars.to_a
+        end
+
+        it 'returns the added body' do
           @blip.to_xml.should == "<body>\n<line t=\"h1\"></line>first line\n<line></line>second line\n</body>"
         end
       end
 
       context 'when contributors and body added' do
         it 'returns the added contributors and body'
+      end
+    end
+
+    describe '#apply' do
+      context 'when passed in a doc_op' do
+        before :each do
+          @doc_op = mock('doc_op')
+        end
+
+        it 'calls the doc_ops #apply method' do
+          @doc_op.should_receive(:apply)
+          @blip.apply(@doc_op)
+        end
       end
     end
   end

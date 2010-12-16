@@ -1,9 +1,12 @@
-require_relative 'doc_op_transformer'
+require 'bedrock/doc_op_transformer'
+require 'bedrock/element'
 
 module Bedrock
   include DocOpTransformer
   class DocOp
-    def initialize(type, args)
+    attr_accessor :type, :length, :text
+
+    def initialize(type, args={})
       @type = type
       case type
       when :retain
@@ -30,18 +33,6 @@ module Bedrock
       self.freeze
     end
     
-    def type
-      return @type
-    end
-    
-    def length
-      return @length
-    end
-    
-    def text
-      return @text
-    end
-  
     def transform(other)
       return DocOp.transform(self, other)
     end

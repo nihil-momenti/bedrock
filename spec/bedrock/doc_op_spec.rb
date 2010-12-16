@@ -135,6 +135,22 @@ module Bedrock
       end
     end
 
+    context 'when :annotation_boundary operation' do
+      describe '#initialize' do
+        it 'raises a NotImplementedError' do
+          expect { DocOp.new(:annotation_boundary) }.to raise_error NotImplementedError
+        end
+      end
+    end
+
+    context 'when invalid operation' do
+      describe '#initialize' do
+        it 'raises a ArgumentError' do
+          expect { DocOp.new(:blahblah, :something => 'hellloooo') }.to raise_error ArgumentError
+        end
+      end
+    end
+
     context 'when any operation' do
       before :each do
         @doc_op_1 = DocOp.new(:retain, :length => 1)

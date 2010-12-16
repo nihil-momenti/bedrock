@@ -4,6 +4,10 @@ require 'bedrock/doc_op'
 
 module Bedrock
   describe DocOp do
+    before :each do
+      @offset = 10
+    end
+
     context 'when :retain operation' do
       before :each do
         @length = 20
@@ -13,6 +17,12 @@ module Bedrock
       describe '#initialize' do
         it 'sets the length to the given argument' do
           @doc_op.length.should == @length
+        end
+      end
+
+      describe '#apply' do
+        it 'returns the current offset + the retain length' do
+          @doc_op.apply(nil, @offset).should == @offset + @length
         end
       end
     end
@@ -36,6 +46,20 @@ module Bedrock
           @doc_op.length.should == @text.length
         end
       end
+
+      describe '#apply' do
+        it 'inserts the text at the offset' do
+          document = mock('document')
+          document.should_receive(:[]=).with(@offset, 0, @text.chars.to_a)
+          @doc_op.apply(document, @offset)
+        end
+
+        it 'returns the current offset + the length of the text' do
+          document = mock('document')
+          document.should_receive(:[]=)
+          @doc_op.apply(document, @offset).should == @offset + @text.length
+        end
+      end
     end
 
     context 'when :delete_text operation' do
@@ -55,6 +79,20 @@ module Bedrock
 
         it 'sets the length to the length of the given text' do
           @doc_op.length.should == @text.length
+        end
+      end
+
+      describe '#apply' do
+        it 'replaces the text at the offset' do
+          document = mock('document')
+          document.should_receive(:[]=).with(@offset, @text.length, [])
+          @doc_op.apply(document, @offset)
+        end
+
+        it 'returns the current offset' do
+          document = mock('document')
+          document.should_receive(:[]=)
+          @doc_op.apply(document, @offset).should == @offset
         end
       end
     end

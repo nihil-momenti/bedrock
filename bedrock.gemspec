@@ -24,5 +24,4 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec', '~>2.3.0'
   s.add_development_dependency 'cover_me', '~>1.0.0.rc4'
-  s.add_development_dependency 'autotest', '~>4.4.6'
 end

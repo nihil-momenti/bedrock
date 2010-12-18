@@ -1,5 +1,7 @@
 module Bedrock
   class Element
+    attr_accessor :type, :name, :attributes
+
     def initialize(type, name, attributes={})
       @type = type
       @name = name

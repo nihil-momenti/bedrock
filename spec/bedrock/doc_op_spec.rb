@@ -48,15 +48,9 @@ module Bedrock
       end
 
       describe '#apply' do
-        it 'inserts the text at the offset' do
+        it 'inserts the text at the offset and returns the current offset + the length of the text' do
           document = mock('document')
           document.should_receive(:[]=).with(@offset, 0, @text.chars.to_a)
-          @doc_op.apply(document, @offset)
-        end
-
-        it 'returns the current offset + the length of the text' do
-          document = mock('document')
-          document.should_receive(:[]=)
           @doc_op.apply(document, @offset).should == @offset + @text.length
         end
       end
@@ -83,15 +77,9 @@ module Bedrock
       end
 
       describe '#apply' do
-        it 'replaces the text at the offset' do
+        it 'replaces the text at the offset and returns the offset' do
           document = mock('document')
           document.should_receive(:[]=).with(@offset, @text.length, [])
-          @doc_op.apply(document, @offset)
-        end
-
-        it 'returns the current offset' do
-          document = mock('document')
-          document.should_receive(:[]=)
           @doc_op.apply(document, @offset).should == @offset
         end
       end
@@ -109,16 +97,33 @@ module Bedrock
           @doc_op.length.should == 1
         end
       end
+
+      describe '#apply' do
+        it 'inserts the element at the specified offset and returns offset + 1' do
+          document = mock('document')
+          document.should_receive(:[]=).with(@offset, 0, [an_instance_of(Element)])
+          @doc_op.apply(document, @offset).should == [@offset + 1, @name]
+        end
+      end
     end
 
     context 'when :insert_element_end operation' do
       before :each do
         @doc_op = DocOp.new(:insert_element_end)
+        @name = 'element_name'
       end
 
       describe '#initialize' do
         it 'sets the length to 1' do
           @doc_op.length.should == 1
+        end
+      end
+
+      describe '#apply' do
+        it 'inserts the element at the specified offset and returns offset + 1' do
+          document = mock('document')
+          document.should_receive(:[]=).with(@offset, 0, [an_instance_of(Element)])
+          @doc_op.apply(document, @offset, @name).should == @offset + 1
         end
       end
     end
@@ -133,6 +138,14 @@ module Bedrock
           @doc_op.length.should == 1
         end
       end
+
+      describe '#apply' do
+        it 'deletes the element at the specified offset and returns the offset' do
+          document = mock('document')
+          document.should_receive(:[]=).with(@offset, 1, [])
+          @doc_op.apply(document, @offset).should == @offset
+        end
+      end
     end
 
     context 'when :delete_element_end operation' do
@@ -143,6 +156,14 @@ module Bedrock
       describe '#initialize' do
         it 'sets the length to 1' do
           @doc_op.length.should == 1
+        end
+      end
+
+      describe '#apply' do
+        it 'deletes the element at the specified offset and returns the offset' do
+          document = mock('document')
+          document.should_receive(:[]=).with(@offset, 1, [])
+          @doc_op.apply(document, @offset).should == @offset
         end
       end
     end
@@ -158,6 +179,16 @@ module Bedrock
           @doc_op.length.should == 1
         end
       end
+
+      describe '#apply' do
+        it 'replaces the attributes on the element at the specified offset and returns the offset + 1' do
+          element = mock('element')
+          element.should_receive(:replace_attributes).with(@attributes)
+          document = mock('document')
+          document.should_receive(:[]).with(@offset).and_return(element)
+          @doc_op.apply(document, @offset).should == @offset + 1
+        end
+      end
     end
 
     context 'when :update_attributes operation' do
@@ -169,6 +200,16 @@ module Bedrock
       describe '#initialize' do
         it 'sets the length to 1' do
           @doc_op.length.should == 1
+        end
+      end
+
+      describe '#apply' do
+        it 'updates the attributes on the element at the specified offset and returns the offset + 1' do
+          element = mock('element')
+          element.should_receive(:update_attributes).with(@attributes)
+          document = mock('document')
+          document.should_receive(:[]).with(@offset).and_return(element)
+          @doc_op.apply(document, @offset).should == @offset + 1
         end
       end
     end

@@ -40,7 +40,7 @@ module Bedrock
       return DocOp.transform(self, other)
     end
 
-    def apply(document, offset)
+    def apply(document, offset, name=nil)
       case @type
       when :retain
         return offset + @length
@@ -54,11 +54,11 @@ module Bedrock
         return offset
 
       when :insert_element_start
-        document[offset, 0] = @element
-        return offset + @length
+        document[offset, 0] = [@element]
+        return offset + @length, @element.name
 
       when :insert_element_end
-        # TODO: some way to know what element to close
+        document[offset, 0] = [Element.new(:end, name)]
         return offset + @length
 
       when :replace_attributes

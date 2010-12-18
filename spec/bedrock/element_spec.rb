@@ -4,6 +4,21 @@ require 'bedrock/element'
 
 module Bedrock
   describe Element do
+    describe 'attributes' do
+      type = :start
+      name = 'name'
+      attributes = { :a1 => 'v1', :a2 => 'v2' }
+
+      before :each do
+        @element = Element.new(type, name, attributes)
+      end
+
+      [[:type, type], [:name, name], [:attributes,  attributes]].each do |method, value|
+        it "#{method} has the correct value" do
+          @element.send(method).should == value
+        end
+      end
+    end
     describe '#to_xml' do
       context 'when given no attributes' do
         it 'returns a basic start element' do

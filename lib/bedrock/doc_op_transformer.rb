@@ -93,7 +93,7 @@ module Bedrock
         when :retain, :insert_text, :insert_element_start, :insert_element_end,
              :delete_text, :delete_element_start, :delete_element_end,
              :replace_attributes, :update_attributes
-          return DocOp.new(:retain, :length => client_op.length),
+          return DocOp.new(:retain, length: client_op.length),
                  nil,
                  client_op,
                  server_op

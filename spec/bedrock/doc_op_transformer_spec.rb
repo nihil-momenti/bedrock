@@ -1,6 +1,7 @@
 require_relative '../spec_helper'
 
 require 'bedrock/doc_op_transformer'
+require 'json'
 
 module Bedrock
   describe DocOpTransformer do
@@ -25,5 +26,7 @@ module Bedrock
         end
       end
     end
+
+
   end
 end

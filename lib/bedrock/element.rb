@@ -27,5 +27,9 @@ module Bedrock
       end
       return s
     end
+
+    def == other
+      other.instance_of?(Element) and @type == other.type and @name == other.name and @attributes == other.attributes
+    end
   end
 end
